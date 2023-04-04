@@ -1,4 +1,5 @@
 from PySide6 import QtWidgets, QtGui, QtCore
+from googletrans import Translator
 import sys
 
 
@@ -24,7 +25,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # create the Agrifarm label and add it to the main widget
         agrifarm_label = QtWidgets.QLabel('AGRIFARM', self.main_widget)
         agrifarm_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
-        agrifarm_label.setGeometry(0, 100, 900, 70)
+        agrifarm_label.setGeometry(0, 100, 950, 150)
         agrifarm_label.setAlignment(QtCore.Qt.AlignCenter)
 
         # create the location checkbox and add it to the main widget
@@ -84,9 +85,80 @@ class MainWindow(QtWidgets.QMainWindow):
         # create the user guide button and add it to the main widget
         user_guide_button = QtWidgets.QPushButton('User Guide', self.main_widget)
         user_guide_button.setFont(QtGui.QFont("Monaco", 8, QtGui.QFont.Bold))
-        user_guide_button.setGeometry(650, 610, 80, 30)
+        user_guide_button.setGeometry(650, 610, 95, 30)
         user_guide_button.setStyleSheet("QPushButton { border-radius: 10px;background-color: #72752f}")
         user_guide_button.clicked.connect(self.show_user_guide)
+
+
+        # create the translate combo box and add it to the main widget
+        self.translate_combobox = QtWidgets.QComboBox(self.main_widget)
+        self.translate_combobox.setGeometry(740, 20, 150, 30)
+        self.translate_combobox.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
+        self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
+        self.translate_combobox.addItems(["Select Language", "Marathi","Hindi","Reset"])
+        
+
+        # create an instance of the translator
+        self.translator = Translator()
+
+        # connect the "activated" signal of the translate_combobox to a slot function
+        self.translate_combobox.activated.connect(self.translate_text)
+
+
+    
+    
+    def translate_text(self, index):
+
+    # check if the selected language is Marathi
+        if self.translate_combobox.itemText(index) == "Marathi":
+        # get the English text of each label and button and translate it to Marathi
+                for label in self.main_widget.findChildren(QtWidgets.QLabel):
+                        if not hasattr(label, "original_text"):
+                                label.setProperty("original_text", label.text())
+                        text = label.property("original_text")
+                        if text:
+                                translated_text = self.translator.translate(text, src='en', dest='mr').text
+                                label.setText(translated_text)
+                
+                for button in self.main_widget.findChildren(QtWidgets.QPushButton):
+                        if not hasattr(button, "original_text"):
+                                button.setProperty("original_text", button.text())
+                        text = button.property("original_text")
+                        if text:
+                                translated_text = self.translator.translate(text, src='en', dest='mr').text
+                                button.setText(translated_text)
+
+        elif self.translate_combobox.itemText(index) == "Reset":
+        # reset to English
+                for label in self.main_widget.findChildren(QtWidgets.QLabel):
+                        label.setText(label.property("original_text"))
+        
+                for button in self.main_widget.findChildren(QtWidgets.QPushButton):
+                        button.setText(button.property("original_text"))
+
+        elif self.translate_combobox.itemText(index) == "Hindi":
+        # translate to Hindi
+                for label in self.main_widget.findChildren(QtWidgets.QLabel):
+                        text = label.text()
+                        if text:
+                                translated_text = self.translator.translate(text, src='en', dest='hi').text
+                                label.setText(translated_text)
+        
+                for button in self.main_widget.findChildren(QtWidgets.QPushButton):
+                        text = button.text()
+                        if text:
+                                 translated_text = self.translator.translate(text, src='en', dest='hi').text
+                                 button.setText(translated_text)
+    
+        
+    
+        else:
+        # selected "Select Language"
+                pass        
+        
+        
+        
+        
 
     def show_weather_page(self):
 
@@ -145,6 +217,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
 # set stylesheet for main window
         self.setStyleSheet("background-color: #cccead;")
+
+                # create the translate combo box and add it to the main widget
+        self.translate_combobox = QtWidgets.QComboBox(self.weather_widget)
+        self.translate_combobox.setGeometry(740, 20, 150, 30)
+        self.translate_combobox.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
+        self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
+        self.translate_combobox.addItems(["Select Language", "Marathi","Hindi","Reset"])
+        
+
+        # create an instance of the translator
+        self.translator = Translator()
+
+        # connect the "activated" signal of the translate_combobox to a slot function
+        self.translate_combobox.activated.connect(self.translate_text)
 
        
     def show_price_page(self):
