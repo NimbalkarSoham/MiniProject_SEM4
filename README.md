@@ -10,12 +10,18 @@ Agrifarm is developed using Python.
 Agrifarm is licensed under the MIT license.
 
 # Features:
--Detailed weather information
+-Detailed weather information   
+
 -Soil information
+
 -AI-based crop price prediction
+
 -Suggestion and update box
+
 -Translate feature in multiple languages
+
 -Reset option
+
 -User guide provided
 
 # Usage
