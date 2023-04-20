@@ -28,7 +28,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # set background image of main widget
         background_label = QtWidgets.QLabel(self.main_widget)
-        background_pixmap = QtGui.QPixmap('fa.jpeg')
+        background_pixmap = QtGui.QPixmap('C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\fa.jpeg')
         # background_pixmap = background_pixmap.scaled(self.main_widget.size(), QtCore.Qt.IgnoreAspectRatio)
         background_label.setPixmap(background_pixmap)
         self.resize(background_pixmap.width(),background_pixmap.height())
@@ -55,7 +55,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # create the suggestion box and add it to the main widget
         suggestion_box = QtWidgets.QGroupBox('Suggestion', self.main_widget)
-        # suggestion_box.setStyleSheet("background-color: #cccead;")
+        suggestion_box.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         suggestion_box.setGeometry(150, 450, 400, 150)
         suggestion_layout = QtWidgets.QVBoxLayout(suggestion_box)
         suggestion_text = QtWidgets.QLabel('Enter suggestion here...', suggestion_box)
@@ -65,7 +65,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # create the update box and add it to the main widget
         update_box = QtWidgets.QGroupBox('Update', self.main_widget)
-        # update_box.setStyleSheet("background-color: #cccead;")
+        update_box.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         update_box.setGeometry(150, 250, 400, 150)
         update_layout = QtWidgets.QVBoxLayout(update_box)
         update_text = QtWidgets.QLabel('Enter update here...', update_box)
@@ -114,7 +114,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.translate_combobox = QtWidgets.QComboBox(self.main_widget)
         self.translate_combobox.setGeometry(740, 20, 150, 30)
         self.translate_combobox.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
-        self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
+        self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(\\images\\down_arrow.png);}""")
         self.translate_combobox.addItems(["Select Language", "Marathi","Hindi","Reset"])
         
 
@@ -180,26 +180,33 @@ class MainWindow(QtWidgets.QMainWindow):
         self.weather_widget = QtWidgets.QWidget(self)
         self.setFixedSize(900, 700)
 
+
     # create label for Weather
-        weather_label = QtWidgets.QLabel("Weather", alignment=QtCore.Qt.AlignCenter)
+        weather_label = QtWidgets.QLabel("WEATHER", alignment=QtCore.Qt.AlignCenter)
         weather_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
 
     # create GroupBox for current weather
-        current_weather_groupbox = QtWidgets.QGroupBox("Current Weather:")
+        current_weather_groupbox = QtWidgets.QGroupBox("          Current Weather:")
         current_weather_groupbox.setStyleSheet("QGroupBox { font-size: 20px; font-weight: bold; }")
+        current_weather_groupbox.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         current_weather_layout = QtWidgets.QHBoxLayout(current_weather_groupbox)
         current_weather_value_label = QtWidgets.QLabel("Sunny")
         current_weather_layout.addWidget(current_weather_value_label)
         current_weather_layout.addStretch()
+        current_weather_layout.addSpacerItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
 
     # create GroupBox for past weather
-        past_weather_groupbox = QtWidgets.QGroupBox("Future Weather Condition:")
+        past_weather_groupbox = QtWidgets.QGroupBox("          Future Weather Condition:")
         past_weather_groupbox.setStyleSheet("QGroupBox { font-size: 20px; font-weight: bold; }")
+        past_weather_groupbox.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         past_weather_layout = QtWidgets.QHBoxLayout(past_weather_groupbox)
         past_weather_value_label = QtWidgets.QLabel("Cloudy")
         past_weather_layout.addWidget(past_weather_value_label)
         past_weather_layout.addStretch()
+        past_weather_layout.addSpacerItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
 
+        current_weather_groupbox.setMaximumWidth(550)
+        past_weather_groupbox.setMaximumWidth(550)
     # create graph button
         graph_button = QtWidgets.QPushButton("Graph")
         graph_button.setStyleSheet("QPushButton { border-radius: 5px;background-color: #72752f; padding: 10px 20px; }")
@@ -226,7 +233,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # create background label
         background_label = QtWidgets.QLabel(self)
-        background_pixmap = QtGui.QPixmap('weather.jpg')
+        background_pixmap = QtGui.QPixmap('C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\weather.jpg')
         background_pixmap = background_pixmap.scaled(self.size(), QtCore.Qt.IgnoreAspectRatio)
         background_label.setPixmap(background_pixmap)
         background_label.setGeometry(0, 0, self.width(), self.height())
@@ -312,20 +319,25 @@ class MainWindow(QtWidgets.QMainWindow):
         price_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
 
     # create GroupBox for current price
-        current_price_groupbox = QtWidgets.QGroupBox("Current price:")
+        current_price_groupbox = QtWidgets.QGroupBox("          Current price:")
         current_price_groupbox.setStyleSheet("QGroupBox { font-size: 20px; font-weight: bold; }")
+        current_price_groupbox.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         current_price_layout = QtWidgets.QHBoxLayout(current_price_groupbox)
         current_price_value_label = QtWidgets.QLabel("Sunny")
         current_price_layout.addWidget(current_price_value_label)
         current_price_layout.addStretch()
 
     # create GroupBox for past price
-        past_price_groupbox = QtWidgets.QGroupBox("Future price Condition:")
+        past_price_groupbox = QtWidgets.QGroupBox("          Future price Condition:")
         past_price_groupbox.setStyleSheet("QGroupBox { font-size: 20px; font-weight: bold; }")
+        past_price_groupbox.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         past_price_layout = QtWidgets.QHBoxLayout(past_price_groupbox)
         past_price_value_label = QtWidgets.QLabel("Cloudy")
         past_price_layout.addWidget(past_price_value_label)
         past_price_layout.addStretch()
+
+        current_price_groupbox.setMaximumWidth(550)
+        past_price_groupbox.setMaximumWidth(550)
 
     # create graph button
         graph_button = QtWidgets.QPushButton("Graph")
@@ -353,7 +365,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # create background label
         background_label = QtWidgets.QLabel(self)
-        background_pixmap = QtGui.QPixmap('price.jpg')
+        background_pixmap = QtGui.QPixmap('C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\price.jpg')
         background_pixmap = background_pixmap.scaled(self.size(), QtCore.Qt.IgnoreAspectRatio)
         background_label.setPixmap(background_pixmap)
         background_label.setGeometry(0, 0, self.width(), self.height())
@@ -390,20 +402,25 @@ class MainWindow(QtWidgets.QMainWindow):
         soil_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
 
     # create GroupBox for current soil
-        current_soil_groupbox = QtWidgets.QGroupBox("Current soil:")
+        current_soil_groupbox = QtWidgets.QGroupBox("          Current soil:")
         current_soil_groupbox.setStyleSheet("QGroupBox { font-size: 20px; font-weight: bold; }")
+        current_soil_groupbox.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         current_soil_layout = QtWidgets.QHBoxLayout(current_soil_groupbox)
         current_soil_value_label = QtWidgets.QLabel("Sunny")
         current_soil_layout.addWidget(current_soil_value_label)
         current_soil_layout.addStretch()
 
     # create GroupBox for past soil
-        past_soil_groupbox = QtWidgets.QGroupBox("Future soil Condition:")
+        past_soil_groupbox = QtWidgets.QGroupBox("          Future soil Condition:")
         past_soil_groupbox.setStyleSheet("QGroupBox { font-size: 20px; font-weight: bold; }")
+        past_soil_groupbox.setStyleSheet("background-color:  #f2f2f2; border-radius: 10px;")
         past_soil_layout = QtWidgets.QHBoxLayout(past_soil_groupbox)
         past_soil_value_label = QtWidgets.QLabel("Cloudy")
         past_soil_layout.addWidget(past_soil_value_label)
         past_soil_layout.addStretch()
+
+        current_soil_groupbox.setMaximumWidth(550)
+        past_soil_groupbox.setMaximumWidth(550)
 
     # create graph button
         graph_button = QtWidgets.QPushButton("Graph")
@@ -431,8 +448,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # create background label
         background_label = QtWidgets.QLabel(self)
-        background_pixmap = QtGui.QPixmap('grain.jpg')
-        background_pixmap = background_pixmap.scaled(self.size(), QtCore.Qt.IgnoreAspectRatio)
+        background_pixmap = QtGui.QPixmap('C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\soil.jpg')
+        # background_pixmap = background_pixmap.scaled(self.size(), QtCore.Qt.IgnoreAspectRatio)
         background_label.setPixmap(background_pixmap)
         background_label.setGeometry(0, 0, self.width(), self.height())
 
@@ -444,7 +461,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
                     # create the translate combo box and add it to the main widget
         self.translate_combobox = QtWidgets.QComboBox(self.soil_widget)
-        self.translate_combobox.setGeometry(740, 20, 150, 30)
+        self.translate_combobox.setGeometry(720, 20, 150, 30)
         self.translate_combobox.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
         self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
         self.translate_combobox.addItems(["Select Language", "Marathi","Hindi","Reset"])
