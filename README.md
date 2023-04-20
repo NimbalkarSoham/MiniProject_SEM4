@@ -41,4 +41,4 @@ Agrifarm is open for contributions from anyone who wishes to improve the applica
 Agrifarm was developed by @Abhishekk24 @NimbalkarSoham @Vishal-Gori with the help of multiple sources such as Google.
 
 Contact Us
-If you have any queries or suggestions regarding Agrifarm, please feel free to contact us at heyyabhishekjadhav@gmail.com. We would be happy to assist you.
+If you have any queries or suggestions regarding Agrifarm, please feel free to contact us at heyyabhishekjadhav@gmail.com . We would be happy to assist you.
