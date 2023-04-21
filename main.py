@@ -256,8 +256,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.translator = Translator()
 
             # connect the "activated" signal of the translate_combobox to a slot function
-        self.translate_combobox.activated.connect(self.translate_text)
-    def translate_text(self, index):
+        self.translate_combobox.activated.connect(self.translatee_text)
+
+    def translatee_text(self, index):
 
     # check if the selected language is Marathi
         if self.translate_combobox.itemText(index) == "Marathi":
