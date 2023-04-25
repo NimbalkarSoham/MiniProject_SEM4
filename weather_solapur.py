@@ -5,10 +5,10 @@ import pandas as pd
 from connection_db import conn
 
 
-sql_query = '''select * from weatherdata where DATE NOT like '%2023' '''
+sql_query = '''select * from solapur_weather where DATE NOT like '%2023' '''
 df_data = pd.read_sql_query(sql_query, conn)
 
-query_2022 = '''select * from weatherdata where DATE like '%2022' '''
+query_2022 = '''select * from solapur_weather where DATE like '%2022' '''
 data_2022 = pd.read_sql_query(query_2022, conn)
 data_2022.replace(-999, None, inplace=True)
 data_2022 = data_2022.ffill()
@@ -21,7 +21,7 @@ df = df_data
 
 # Extract the features and target variables
 X = df.drop(['DATE', 'YEAR', 'DOY', 'GWETTOP', 'GWETPROF',
-            'WD2M', 'WS2M', 'PRECTOTCORR', 'T2MDEW'], axis=1)
+             'PRECTOTCORR', 'T2MDEW'], axis=1)
 y_prec = df['PRECTOTCORR']
 
 # Split the dataset into training and testing sets
@@ -40,11 +40,11 @@ prec_rmse = mean_squared_error(y_prec_test, y_prec_pred, squared=False)
 
 # Make predictions for the next 6 months of temperature and precipitation
 # Create a DataFrame for next 6 months with lagged temperature and precipitation values
-X_pred = pd.DataFrame({'PS': data_2022['PS'],
-                       'QV2M': data_2022['QV2M'],
-                       'T2M': data_2022['T2M'],
+X_pred = pd.DataFrame({'T2M': data_2022['T2M'],
                        'T2M_MAX': data_2022['T2M_MAX'],
-                       'T2M_MIN': data_2022['T2M_MIN']})
+                       'T2M_MIN': data_2022['T2M_MIN'],
+                       'QV2M': data_2022['QV2M'],
+                       'PS': data_2022['PS'], })
 
 X_pred['PS'] += 0.064
 X_pred['QV2M'] -= 0.40

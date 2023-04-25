@@ -6,7 +6,7 @@ import pandas as pd
 from connection_db import conn
 
 
-sql_query = '''select * from product_price'''
+sql_query = '''select * from sangli_crop_price'''
 dataset = pd.read_sql_query(sql_query, conn)
 
 X = dataset['Year'].to_numpy()  # Input variables
@@ -43,3 +43,4 @@ year = np.append(X, [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024])
 
 Sangli_price_df = pd.DataFrame({'Year': year,
                                 'Rate': prices})
+Sangli_price_df.set_index('Year', inplace=True)

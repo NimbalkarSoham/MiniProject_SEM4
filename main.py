@@ -6,7 +6,7 @@ from weather_solapur import df_solapur
 from price_satara import Satara_price_df
 from price_sangli import Sangli_price_df
 from price_solapur import Solapur_price_df
-from datetime import datetime
+import datetime
 
 import sys
 
@@ -204,7 +204,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 selected_df = df_sangli
             else:
                 selected_df = df_solapur
-            now = datetime.now()
+            now = datetime.datetime.now()
 #!!!           !!!!!!!!!!!!! change X_pred to selected_df
             filtered_df = selected_df[selected_df.index >= now]
             #global future_weather_text
@@ -212,7 +212,7 @@ class MainWindow(QtWidgets.QMainWindow):
             #    filtered_df.head(10)['Precipitation'].max())+'\nAverage Humidity: '+str(filtered_df.head(10)['QV2M'].mean())+'\nAverage Surface Pressure: '+str(filtered_df.head(10)['PS'].mean())
             global current_weather_text
             current_weather_text = selected_location+'\nMin temperature: '+str(filtered_df.head(1)['T2M_MIN'].min())+'\nMax Temperature: '+str(filtered_df.head(1)['T2M_MAX'].max())+'\nMax Precipitation(in mm): '+str(
-                filtered_df.head(1)['Precipitation'].max())+'\nAverage Humidity: '+str(filtered_df.head(1)['QV2M'].mean())+'\nAverage Surface Pressure: '+str(filtered_df.head(1)['PS'].mean())
+                int(filtered_df.head(1)['Precipitation'].max()))+'\nAverage Humidity: '+str(int(filtered_df.head(1)['QV2M'].mean()))+'\nAverage Surface Pressure: '+str(int(filtered_df.head(1)['PS'].mean()))
             return current_weather_text
 
         def update_FWeatherText():
@@ -223,12 +223,12 @@ class MainWindow(QtWidgets.QMainWindow):
                 selected_df = df_sangli
             else:
                 selected_df = df_solapur
-            now = datetime.now()
+            now = datetime.datetime.now()
 #!!!        !!!!!!!!!!!!! change X_pred to selected_df
             filtered_df = selected_df[selected_df.index >= now]
             global future_weather_text
             future_weather_text = selected_location+'\nMin temperature: '+str(filtered_df.head(10)['T2M'].min())+'\nMax Temperature: '+str(filtered_df.head(10)['T2M'].max())+'\nMax Precipitation(in mm): '+str(
-                filtered_df.head(10)['Precipitation'].max())+'\nAverage Humidity: '+str(filtered_df.head(10)['QV2M'].mean())+'\nAverage Surface Pressure: '+str(filtered_df.head(10)['PS'].mean())
+                int(filtered_df.head(10)['Precipitation'].max()))+'\nAverage Humidity: '+str(int(filtered_df.head(10)['QV2M'].mean()))+'\nAverage Surface Pressure: '+str(int(filtered_df.head(10)['PS'].mean()))
             #global current_weather_text
             # current_weather_text = selected_location+'\nMin temperature: '+str(filtered_df.head(1)['T2M_MIN'].min())+'\nMax Temperature: '+str(filtered_df.head(1)['T2M_MAX'].max())+'\nMax Precipitation(in mm): '+str(
             #    filtered_df.head(1)['Precipitation'].max())+'\nAverage Humidity: '+str(filtered_df.head(1)['QV2M'].mean())+'\nAverage Surface Pressure: '+str(filtered_df.head(1)['PS'].mean())
@@ -245,7 +245,7 @@ class MainWindow(QtWidgets.QMainWindow):
         current_weather_groupbox.setStyleSheet(
             "QGroupBox { font-size: 20px; font-weight: bold; }")
         current_weather_groupbox.setStyleSheet(
-            "background-color:  #f2f2f2; border-radius: 10px;")
+            "background-color:  #f2f2f2; border-radius: 10px;padding:5px")
         current_weather_layout = QtWidgets.QHBoxLayout(
             current_weather_groupbox)
         current_weather_value_label = QtWidgets.QLabel(update_CWeatherText())
@@ -260,7 +260,7 @@ class MainWindow(QtWidgets.QMainWindow):
         past_weather_groupbox.setStyleSheet(
             "QGroupBox { font-size: 20px; font-weight: bold; }")
         past_weather_groupbox.setStyleSheet(
-            "background-color:  #f2f2f2; border-radius: 10px;")
+            "background-color:  #f2f2f2; border-radius: 10px;padding:5px")
         past_weather_layout = QtWidgets.QHBoxLayout(past_weather_groupbox)
         past_weather_value_label = QtWidgets.QLabel(update_FWeatherText())
         past_weather_layout.addWidget(past_weather_value_label)
@@ -382,6 +382,40 @@ class MainWindow(QtWidgets.QMainWindow):
         self.price_widget = QtWidgets.QWidget(self)
         self.setFixedSize(900, 700)
 
+        def update_CPriceText():
+            global selected_df
+            if selected_location == 'Satara':
+                selected_df = Satara_price_df
+            elif selected_location == 'Sangli':
+                selected_df = Sangli_price_df
+            else:
+                selected_df = Solapur_price_df
+            current_year = datetime.datetime.now().year
+#!!!           !!!!!!!!!!!!! change X_pred to selected_df
+            filtered_df = selected_df[selected_df.index >= current_year]
+            global current_weather_text
+            current_price_text = selected_location + \
+                '\nWheat Prices(Per Quintal): ' + \
+                str(int(filtered_df.head(1)['Rate']))+'\n'
+            return current_price_text
+
+        def update_FPriceText():
+            global selected_df
+            if selected_location == 'Satara':
+                selected_df = Satara_price_df
+            elif selected_location == 'Sangli':
+                selected_df = Sangli_price_df
+            else:
+                selected_df = Solapur_price_df
+            current_year = datetime.datetime.now().year
+#!!!           !!!!!!!!!!!!! change X_pred to selected_df
+            filtered_df = selected_df[selected_df.index > current_year]
+            global future_price_text
+            future_price_text = selected_location + \
+                '\nWheat Prices(Per Quintal): ' + \
+                str(int(filtered_df.head(1)['Rate']))+'\n'
+            return future_price_text
+
     # create label for price
         price_label = QtWidgets.QLabel(
             "Price", alignment=QtCore.Qt.AlignCenter)
@@ -389,25 +423,25 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # create GroupBox for current price
         current_price_groupbox = QtWidgets.QGroupBox(
-            "          Current price:")
+            "          Price This Season:")
         current_price_groupbox.setStyleSheet(
             "QGroupBox { font-size: 20px; font-weight: bold; }")
         current_price_groupbox.setStyleSheet(
-            "background-color:  #f2f2f2; border-radius: 10px;")
+            "background-color:  #f2f2f2; border-radius: 10px;padding:5px")
         current_price_layout = QtWidgets.QHBoxLayout(current_price_groupbox)
-        current_price_value_label = QtWidgets.QLabel("Sunny")
+        current_price_value_label = QtWidgets.QLabel(update_CPriceText())
         current_price_layout.addWidget(current_price_value_label)
         current_price_layout.addStretch()
 
     # create GroupBox for past price
         past_price_groupbox = QtWidgets.QGroupBox(
-            "          Future price Condition:")
+            "          Price next Season:")
         past_price_groupbox.setStyleSheet(
             "QGroupBox { font-size: 20px; font-weight: bold; }")
         past_price_groupbox.setStyleSheet(
-            "background-color:  #f2f2f2; border-radius: 10px;")
+            "background-color:  #f2f2f2; border-radius: 10px;padding:5px")
         past_price_layout = QtWidgets.QHBoxLayout(past_price_groupbox)
-        past_price_value_label = QtWidgets.QLabel("Cloudy")
+        past_price_value_label = QtWidgets.QLabel(update_FPriceText())
         past_price_layout.addWidget(past_price_value_label)
         past_price_layout.addStretch()
 
