@@ -6,6 +6,9 @@ from weather_solapur import df_solapur
 from price_satara import Satara_price_df
 from price_sangli import Sangli_price_df
 from price_solapur import Solapur_price_df
+from satara_cropinfo import text_satara , price_satara , time_satara
+from sangali_cropinfo import text_sangli , price_sangli , time_sangli
+from solapur_cropinfo import text_solapur , price_solapur , time_solapur
 import datetime
 
 import sys
@@ -15,8 +18,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("AGRIFARM")
+        
+        
+        # Set the main window size
         self.setFixedSize(900, 700)
-
+        
+        
         self.show_main_window()
 
     def show_main_window(self):
@@ -49,12 +56,17 @@ class MainWindow(QtWidgets.QMainWindow):
         agrifarm_label.setGeometry(0, 100, 950, 150)
         agrifarm_label.setAlignment(QtCore.Qt.AlignCenter)
 
+        # logo_label = QtWidgets.QLabel(self.main_widget)
+        # logo_pixmap = QtGui.QPixmap('C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\Agrifarm_logo.png')
+        # logo_label.setPixmap(logo_pixmap)
+        # logo_label.setGeometry(10, 10, 200, 50)
+
         # create the location checkbox and add it to the main widget
         location_combobox = QtWidgets.QComboBox(self.main_widget)
         location_combobox.setGeometry(10, 260, 100, 30)
         location_combobox.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
         location_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
-        location_combobox.addItems(["Satara", "Sangli", "Solapur"])
+        location_combobox.addItems(["Location","Satara", "Sangli", "Solapur"])
         location_combobox.currentTextChanged.connect(update_SelectedLocation)
 
         # create the suggestion box and add it to the main widget
@@ -105,7 +117,7 @@ class MainWindow(QtWidgets.QMainWindow):
         price_button.setGeometry(600, 340, 200, 50)
         price_button.setStyleSheet(
             "QPushButton { border-radius: 10px;background-color: #72752f}")
-        soil_button = QtWidgets.QPushButton('Soil', self.main_widget)
+        soil_button = QtWidgets.QPushButton('Time', self.main_widget)
         soil_button.setFont(QtGui.QFont("Georgia", 10, QtGui.QFont.Bold))
         soil_button.setGeometry(600, 410, 200, 50)
         soil_button.setStyleSheet(
@@ -233,6 +245,9 @@ class MainWindow(QtWidgets.QMainWindow):
             # current_weather_text = selected_location+'\nMin temperature: '+str(filtered_df.head(1)['T2M_MIN'].min())+'\nMax Temperature: '+str(filtered_df.head(1)['T2M_MAX'].max())+'\nMax Precipitation(in mm): '+str(
             #    filtered_df.head(1)['Precipitation'].max())+'\nAverage Humidity: '+str(filtered_df.head(1)['QV2M'].mean())+'\nAverage Surface Pressure: '+str(filtered_df.head(1)['PS'].mean())
             return future_weather_text
+            
+            
+            
 
     # create label for Weather
         weather_label = QtWidgets.QLabel(
@@ -271,7 +286,7 @@ class MainWindow(QtWidgets.QMainWindow):
         current_weather_groupbox.setMaximumWidth(550)
         past_weather_groupbox.setMaximumWidth(550)
     # create graph button
-        graph_button = QtWidgets.QPushButton("Graph")
+        graph_button = QtWidgets.QPushButton("Tips")
         graph_button.setStyleSheet(
             "QPushButton { border-radius: 5px;background-color: #72752f; padding: 10px 20px; }")
         graph_button.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
@@ -449,11 +464,11 @@ class MainWindow(QtWidgets.QMainWindow):
         past_price_groupbox.setMaximumWidth(550)
 
     # create graph button
-        graph_button = QtWidgets.QPushButton("Graph")
+        graph_button = QtWidgets.QPushButton("Tips")
         graph_button.setStyleSheet(
             "QPushButton { border-radius: 5px;background-color: #72752f; padding: 10px 20px; }")
         graph_button.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
-        graph_button.clicked.connect(self.show_graph_page)
+        graph_button.clicked.connect(self.showw_graph_page)
 
         back_button = QtWidgets.QPushButton('Back', self)
         back_button.setStyleSheet(
@@ -508,42 +523,45 @@ class MainWindow(QtWidgets.QMainWindow):
         self.soil_widget = QtWidgets.QWidget(self)
         self.setFixedSize(900, 700)
 
+        def update_SuggestText():
+            global selected_text
+            if selected_location == 'Satara':
+                selected_text = time_satara
+                return selected_text
+            elif selected_location == 'Sangli':
+                selected_text = time_sangli
+                return selected_text
+            else:
+                selected_text = time_solapur
+                return selected_text
+
     # create label for soil
-        soil_label = QtWidgets.QLabel("Soil", alignment=QtCore.Qt.AlignCenter)
+        soil_label = QtWidgets.QLabel("Time Suggestion", alignment=QtCore.Qt.AlignCenter)
         soil_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
 
     # create GroupBox for current soil
-        current_soil_groupbox = QtWidgets.QGroupBox("          Current soil:")
+        current_soil_groupbox = QtWidgets.QGroupBox("")
         current_soil_groupbox.setStyleSheet(
             "QGroupBox { font-size: 20px; font-weight: bold; }")
         current_soil_groupbox.setStyleSheet(
             "background-color:  #f2f2f2; border-radius: 10px;")
         current_soil_layout = QtWidgets.QHBoxLayout(current_soil_groupbox)
-        current_soil_value_label = QtWidgets.QLabel("Sunny")
+        current_soil_value_label = QtWidgets.QLabel(update_SuggestText())
         current_soil_layout.addWidget(current_soil_value_label)
         current_soil_layout.addStretch()
 
     # create GroupBox for past soil
-        past_soil_groupbox = QtWidgets.QGroupBox(
-            "          Future soil Condition:")
-        past_soil_groupbox.setStyleSheet(
-            "QGroupBox { font-size: 20px; font-weight: bold; }")
-        past_soil_groupbox.setStyleSheet(
-            "background-color:  #f2f2f2; border-radius: 10px;")
-        past_soil_layout = QtWidgets.QHBoxLayout(past_soil_groupbox)
-        past_soil_value_label = QtWidgets.QLabel("Cloudy")
-        past_soil_layout.addWidget(past_soil_value_label)
-        past_soil_layout.addStretch()
+        
 
-        current_soil_groupbox.setMaximumWidth(550)
-        past_soil_groupbox.setMaximumWidth(550)
+        current_soil_groupbox.setMaximumWidth(850)
+        
 
     # create graph button
-        graph_button = QtWidgets.QPushButton("Graph")
+        graph_button = QtWidgets.QPushButton("Tips")
         graph_button.setStyleSheet(
             "QPushButton { border-radius: 5px;background-color: #72752f; padding: 10px 20px; }")
         graph_button.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
-        graph_button.clicked.connect(self.show_graph_page)
+        graph_button.clicked.connect(self.showww_graph_page)
 
         back_button = QtWidgets.QPushButton('Back', self)
         back_button.setStyleSheet(
@@ -561,7 +579,7 @@ class MainWindow(QtWidgets.QMainWindow):
         soil_layout = QtWidgets.QVBoxLayout(self.soil_widget)
         soil_layout.addWidget(soil_label, alignment=QtCore.Qt.AlignCenter)
         soil_layout.addWidget(current_soil_groupbox)
-        soil_layout.addWidget(past_soil_groupbox)
+        
         soil_layout.addLayout(buttons_layout)
 
     # create background label
@@ -595,22 +613,37 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def show_graph_page(self):
         self.graph_widget = QtWidgets.QWidget()
+        self.setFixedSize(900, 700)
         # create layout for weather widget
         graph_layout = QtWidgets.QVBoxLayout(self.graph_widget)
 
+        def update_SuggestText():
+            global selected_text
+            if selected_location == 'Satara':
+                selected_text = text_satara
+                return selected_text
+            elif selected_location == 'Sangli':
+                selected_text = text_sangli
+                return selected_text
+            else:
+                selected_text = text_solapur
+                return selected_text
+
 # create label for Weather
         graph_label = QtWidgets.QLabel(
-            "Graph", alignment=QtCore.Qt.AlignCenter)
+            "Suggestion", alignment=QtCore.Qt.AlignCenter)
         graph_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
 
         # create GroupBox for current weather
-        Graph_groupbox = QtWidgets.QGroupBox("Graph:")
+        Graph_groupbox = QtWidgets.QGroupBox("Suggestion Corner:")
         Graph_groupbox.setStyleSheet(
-            "QGroupBox { font-size: 20px; font-weight: bold; }")
+            "QGroupBox { font-size: 20px; font-weight: bold;background-color:  #f2f2f2;border-radius: 10px; }")
         Graph_layout = QtWidgets.QHBoxLayout(Graph_groupbox)
-        Graph_value_label = QtWidgets.QLabel(" ")
+        Graph_value_label = QtWidgets.QLabel(update_SuggestText())
         Graph_layout.addWidget(Graph_value_label)
+        
         Graph_layout.addStretch()
+        
 
         back_button = QtWidgets.QPushButton(' Back ', self)
         back_button.setStyleSheet(
@@ -624,23 +657,40 @@ class MainWindow(QtWidgets.QMainWindow):
 
         buttons_layout.setContentsMargins(10, 10, 10, 20)
 
+        
+
 # create weather widget layout
+        
         graph_layout.addWidget(graph_label, alignment=QtCore.Qt.AlignCenter)
         graph_layout.addWidget(Graph_groupbox)
         graph_layout.addLayout(buttons_layout)
 
+        background_label = QtWidgets.QLabel(self)
+        background_pixmap = QtGui.QPixmap(
+            'C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\cotton.jpg')
+        background_pixmap = background_pixmap.scaled(
+            self.size(), QtCore.Qt.IgnoreAspectRatio)
+        background_label.setPixmap(background_pixmap)
+        background_label.setGeometry(0, 0, self.width(), self.height())
+
+    # set background label as the parent of price widget
+        background_layout = QtWidgets.QVBoxLayout(background_label)
+        background_layout.addWidget(self.graph_widget)
+
+        self.setCentralWidget(background_label)
+
 # set weather widget as central widget
-        self.setCentralWidget(self.graph_widget)
+        
 
 # set size of main window
-        self.setFixedSize(900, 700)
+        
 
 # set stylesheet for main window
-        self.setStyleSheet("background-color: #cccead;")
+        # self.setStyleSheet("background-color: #cccead;")
 
         # create the translate combo box and add it to the main widget
         self.translate_combobox = QtWidgets.QComboBox(self.graph_widget)
-        self.translate_combobox.setGeometry(740, 20, 150, 30)
+        self.translate_combobox.setGeometry(720, 20, 150, 30)
         self.translate_combobox.setFont(
             QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
         self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
@@ -652,6 +702,191 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # connect the "activated" signal of the translate_combobox to a slot function
         self.translate_combobox.activated.connect(self.translate_text)
+
+    def showw_graph_page(self):
+        self.graph_widget = QtWidgets.QWidget()
+        self.setFixedSize(900, 700)
+        # create layout for weather widget
+        graph_layout = QtWidgets.QVBoxLayout(self.graph_widget)
+
+        def update_SuggestText():
+            global selected_text
+            if selected_location == 'Satara':
+                selected_text = price_satara
+                return selected_text
+            elif selected_location == 'Sangli':
+                selected_text = price_sangli
+                return selected_text
+            else:
+                selected_text = price_solapur
+                return selected_text
+
+# create label for Weather
+        graph_label = QtWidgets.QLabel(
+            "Suggestion", alignment=QtCore.Qt.AlignCenter)
+        graph_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
+
+        # create GroupBox for current weather
+        Graph_groupbox = QtWidgets.QGroupBox("Suggestion Corner:")
+        Graph_groupbox.setStyleSheet(
+            "QGroupBox { font-size: 20px; font-weight: bold;background-color:  #f2f2f2;border-radius: 10px; }")
+        Graph_layout = QtWidgets.QHBoxLayout(Graph_groupbox)
+        Graph_value_label = QtWidgets.QLabel(update_SuggestText())
+        Graph_layout.addWidget(Graph_value_label)
+        
+        Graph_layout.addStretch()
+        
+
+        back_button = QtWidgets.QPushButton(' Back ', self)
+        back_button.setStyleSheet(
+            "QPushButton { border-radius: 5px;background-color: #72752f ; padding: 10px 20px; }")
+        back_button.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
+        back_button.clicked.connect(self.show_main_window)
+
+# create button layout
+        buttons_layout = QtWidgets.QHBoxLayout()
+        buttons_layout.addWidget(back_button, alignment=QtCore.Qt.AlignLeft)
+
+        buttons_layout.setContentsMargins(10, 10, 10, 20)
+
+        
+
+# create weather widget layout
+        
+        graph_layout.addWidget(graph_label, alignment=QtCore.Qt.AlignCenter)
+        graph_layout.addWidget(Graph_groupbox)
+        graph_layout.addLayout(buttons_layout)
+
+        background_label = QtWidgets.QLabel(self)
+        background_pixmap = QtGui.QPixmap(
+            'C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\cotton.jpg')
+        background_pixmap = background_pixmap.scaled(
+            self.size(), QtCore.Qt.IgnoreAspectRatio)
+        background_label.setPixmap(background_pixmap)
+        background_label.setGeometry(0, 0, self.width(), self.height())
+
+    # set background label as the parent of price widget
+        background_layout = QtWidgets.QVBoxLayout(background_label)
+        background_layout.addWidget(self.graph_widget)
+
+        self.setCentralWidget(background_label)
+
+# set weather widget as central widget
+        
+
+# set size of main window
+        
+
+# set stylesheet for main window
+        # self.setStyleSheet("background-color: #cccead;")
+
+        # create the translate combo box and add it to the main widget
+        self.translate_combobox = QtWidgets.QComboBox(self.graph_widget)
+        self.translate_combobox.setGeometry(720, 20, 150, 30)
+        self.translate_combobox.setFont(
+            QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
+        self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
+        self.translate_combobox.addItems(
+            ["Select Language", "Marathi", "Hindi", "Reset"])
+
+        # create an instance of the translator
+        self.translator = Translator()
+
+        # connect the "activated" signal of the translate_combobox to a slot function
+        self.translate_combobox.activated.connect(self.translate_text)
+
+    def showww_graph_page(self):
+        self.graph_widget = QtWidgets.QWidget()
+        self.setFixedSize(900, 700)
+        # create layout for weather widget
+        graph_layout = QtWidgets.QVBoxLayout(self.graph_widget)
+
+        def update_SuggestText():
+            global selected_text
+            if selected_location == 'Satara':
+                selected_text = price_satara
+                return selected_text
+            elif selected_location == 'Sangli':
+                selected_text = price_sangli
+                return selected_text
+            else:
+                selected_text = price_solapur
+                return selected_text
+
+# create label for Weather
+        graph_label = QtWidgets.QLabel(
+            "Suggestion", alignment=QtCore.Qt.AlignCenter)
+        graph_label.setFont(QtGui.QFont("Georgia", 70, QtGui.QFont.Bold))
+
+        # create GroupBox for current weather
+        Graph_groupbox = QtWidgets.QGroupBox("Suggestion Corner:")
+        Graph_groupbox.setStyleSheet(
+            "QGroupBox { font-size: 20px; font-weight: bold;background-color:  #f2f2f2;border-radius: 10px; }")
+        Graph_layout = QtWidgets.QHBoxLayout(Graph_groupbox)
+        Graph_value_label = QtWidgets.QLabel(update_SuggestText())
+        Graph_layout.addWidget(Graph_value_label)
+        
+        Graph_layout.addStretch()
+        
+
+        back_button = QtWidgets.QPushButton(' Back ', self)
+        back_button.setStyleSheet(
+            "QPushButton { border-radius: 5px;background-color: #72752f ; padding: 10px 20px; }")
+        back_button.setFont(QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
+        back_button.clicked.connect(self.show_main_window)
+
+# create button layout
+        buttons_layout = QtWidgets.QHBoxLayout()
+        buttons_layout.addWidget(back_button, alignment=QtCore.Qt.AlignLeft)
+
+        buttons_layout.setContentsMargins(10, 10, 10, 20)
+
+        
+
+# create weather widget layout
+        
+        graph_layout.addWidget(graph_label, alignment=QtCore.Qt.AlignCenter)
+        graph_layout.addWidget(Graph_groupbox)
+        graph_layout.addLayout(buttons_layout)
+
+        background_label = QtWidgets.QLabel(self)
+        background_pixmap = QtGui.QPixmap(
+            'C:\\Users\\jadha\\Documents\\AGRIFARMM\\images\\cotton.jpg')
+        background_pixmap = background_pixmap.scaled(
+            self.size(), QtCore.Qt.IgnoreAspectRatio)
+        background_label.setPixmap(background_pixmap)
+        background_label.setGeometry(0, 0, self.width(), self.height())
+
+    # set background label as the parent of price widget
+        background_layout = QtWidgets.QVBoxLayout(background_label)
+        background_layout.addWidget(self.graph_widget)
+
+        self.setCentralWidget(background_label)
+
+# set weather widget as central widget
+        
+
+# set size of main window
+        
+
+# set stylesheet for main window
+        # self.setStyleSheet("background-color: #cccead;")
+
+        # create the translate combo box and add it to the main widget
+        self.translate_combobox = QtWidgets.QComboBox(self.graph_widget)
+        self.translate_combobox.setGeometry(720, 20, 150, 30)
+        self.translate_combobox.setFont(
+            QtGui.QFont("Monaco", 10, QtGui.QFont.Bold))
+        self.translate_combobox.setStyleSheet("""QComboBox { background-color: white; color: black ; border:1px solid gray; padding: 1px 18px 1px 3px;min-width: 6em;border-radius: 4px;} QComboBox::drop-down {subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px;border-left-color: gray;border-left-style: solid;border-top-right-radius: 4px;border-bottom-right-radius: 4px; }QComboBox::down-arrow {image: url(up_arrow.png);width: 12px;height: 12px;}QComboBox::down-arrow:on {image: url(down_arrow.png);}""")
+        self.translate_combobox.addItems(
+            ["Select Language", "Marathi", "Hindi", "Reset"])
+
+        # create an instance of the translator
+        self.translator = Translator()
+
+        # connect the "activated" signal of the translate_combobox to a slot function
+        self.translate_combobox.activated.connect(self.translate_text)
+
 
     def show_user_guide(self):
         # create user guide widget
